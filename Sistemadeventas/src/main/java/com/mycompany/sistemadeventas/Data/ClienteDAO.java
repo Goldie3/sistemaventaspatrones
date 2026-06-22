@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PATRÓN DAO
- * Maneja todas las operaciones de base de datos para Cliente.
+ * PATRÓN DAO Maneja todas las operaciones de base de datos para Cliente.
  */
 public class ClienteDAO {
 
@@ -19,14 +18,20 @@ public class ClienteDAO {
 
     public void guardar(Cliente c) {
         String sql = "INSERT INTO clientes (rut, nombre, apellido, correo, numero) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, c.getRut());
             ps.setString(2, c.getNombre());
             ps.setString(3, c.getApellido());
             ps.setString(4, c.getCorreo());
             ps.setString(5, c.getNumero());
             ps.executeUpdate();
-            System.out.println("Cliente guardado: " + c.getNombre());
+
+            // Recuperar el id generado por la BD
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                c.setId(generatedKeys.getInt(1));
+            }
+            System.out.println("Cliente guardado con id: " + c.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,7 +42,9 @@ public class ClienteDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return mapear(rs);
+            if (rs.next()) {
+                return mapear(rs);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -49,7 +56,9 @@ public class ClienteDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nombre);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return mapear(rs);
+            if (rs.next()) {
+                return mapear(rs);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,7 +74,9 @@ public class ClienteDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, rut);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return mapear(rs);
+            if (rs.next()) {
+                return mapear(rs);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,9 +86,10 @@ public class ClienteDAO {
     public List<Cliente> listarTodos() {
         List<Cliente> lista = new ArrayList<>();
         String sql = "SELECT * FROM clientes";
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) lista.add(mapear(rs));
+        try (Statement st = conn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                lista.add(mapear(rs));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -109,8 +121,8 @@ public class ClienteDAO {
     }
 
     /**
-     * Variante de eliminar() usando el rut en lugar del id. VentaFacade
-     * trabaja con ruts (clave de negocio), no con ids autoincrementales.
+     * Variante de eliminar() usando el rut en lugar del id. VentaFacade trabaja
+     * con ruts (clave de negocio), no con ids autoincrementales.
      */
     public void eliminarPorRut(String rut) {
         String sql = "DELETE FROM clientes WHERE rut=?";
@@ -123,12 +135,14 @@ public class ClienteDAO {
     }
 
     private Cliente mapear(ResultSet rs) throws SQLException {
-        return new Cliente(
-            rs.getString("rut"),
-            rs.getString("nombre"),
-            rs.getString("apellido"),
-            rs.getString("correo"),
-            rs.getString("numero")
+        Cliente c = new Cliente(
+                rs.getString("rut"),
+                rs.getString("nombre"),
+                rs.getString("apellido"),
+                rs.getString("correo"),
+                rs.getString("numero")
         );
+        c.setId(rs.getInt("id"));
+        return c;
     }
 }

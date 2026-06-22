@@ -155,11 +155,11 @@ public class productoVentas extends javax.swing.JInternalFrame implements VentaO
         bt_registrar = new javax.swing.JButton();
         bt_actualizar = new javax.swing.JButton();
 
-        cb_clientes.setModel(new javax.swing.DefaultComboBoxModel<>());
-cb_clientes.addActionListener(this::cb_clientesActionPerformed);
+        cb_clientes.setModel(new javax.swing.DefaultComboBoxModel<com.mycompany.sistemadeventas.Logica.Cliente>());
+        cb_clientes.addActionListener(this::cb_clientesActionPerformed);
 
-cb_productos.setModel(new javax.swing.DefaultComboBoxModel<>());
-cb_productos.addActionListener(this::cb_productosActionPerformed);
+        cb_productos.setModel(new javax.swing.DefaultComboBoxModel<com.mycompany.sistemadeventas.Logica.Producto>());
+        cb_productos.addActionListener(this::cb_productosActionPerformed);
 
         jLabel1.setText("Cantidad");
 
@@ -213,15 +213,15 @@ cb_productos.addActionListener(this::cb_productosActionPerformed);
                         .addComponent(bt_actualizar)
                         .addGap(53, 53, 53))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel3))
                                 .addGap(42, 42, 42)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cb_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cb_productos, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cb_productos, 0, 109, Short.MAX_VALUE)
+                                    .addComponent(cb_cantidad)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(53, 53, 53)
@@ -230,8 +230,8 @@ cb_productos.addActionListener(this::cb_productosActionPerformed);
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txt_preciounitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txt_total)
+                                    .addComponent(txt_preciounitario))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
